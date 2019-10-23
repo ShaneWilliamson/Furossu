@@ -9,12 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { EditorDirective } from './editor.directive';
+import { GameBoardComponent } from './game-board/game-board.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HomePageComponent,
-		EditorDirective
+		EditorDirective,
+		GameBoardComponent
 	],
 	imports: [
 		BrowserModule,
