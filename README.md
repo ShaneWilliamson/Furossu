@@ -1,6 +1,6 @@
 # Furossu
 
-A coding challenge interface for individuals to submit code through.
+A coding challenge that is inspired by Bulls and Cows/Mastermind/the Fallout hacking mini-games. (Mostly the Fallout hacking mini-games)
 
 ---
 

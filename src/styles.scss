@@ -28,6 +28,11 @@ $furossu-theme: mat-light-theme($furossu-primary, $furossu-accent, $furossu-warn
 
 @import "~codemirror/lib/codemirror";
 
+#code-panel .CodeMirror {
+	height: 600px;
+	border: 1px solid black;
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
