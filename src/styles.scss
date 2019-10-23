@@ -26,6 +26,8 @@ $furossu-theme: mat-light-theme($furossu-primary, $furossu-accent, $furossu-warn
 // that you are using.
 @include angular-material-theme($furossu-theme);
 
+@import "~codemirror/lib/codemirror";
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }

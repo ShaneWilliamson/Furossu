@@ -7,11 +7,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { EditorDirective } from './editor.directive';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		HomePageComponent
+		HomePageComponent,
+		EditorDirective
 	],
 	imports: [
 		BrowserModule,

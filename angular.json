@@ -12,7 +12,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "code",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -30,7 +30,9 @@
             "styles": [
 			  "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+			  "node_modules/codemirror/mode/javascript/javascript.js"
+			]
           },
           "configurations": {
             "production": {
