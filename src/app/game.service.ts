@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Guess } from './common/guess';
+import { Code } from './common/code';
 
 export const words = [
 	"koila",
@@ -101,34 +102,42 @@ export const words = [
 	"ostic",
 	"cahot",
 	"unwit",
-	"gusts", 
+	"gusts",
 ]
 
+const CODE_COUNT = 10;
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class GameService {
 	private _guesses: Guess[];
-	private _codes: string[];
+	private _codes: Code[];
 	private _answerIdx: number;
 
 	constructor() {
 		this._guesses = [];
-		// TODO: Generate random codes for our list of possible codes
 		this._codes = [];
 	}
-	
+
 	public getGuesses(): Guess[] {
 		return this._guesses;
 	}
 
-	public getCodes(): string[] {
-		var ret = [];
-		for(var i = 0; i < 10; i++) {
-			// Add another word with index random between 0 and 99
-			ret.push(words[Math.floor(Math.random() * (99 + 1))]);
+	private randomIdx(maxIdx: number): number {
+		return Math.floor(Math.random() * (maxIdx + 1))
+	}
+
+	public getCodes(): Code[] {
+		if (!!this._codes && this._codes.length !== 0) {
+			return this._codes;
 		}
-		return ret;
+		this._codes = [];
+		for (var i = 0; i < CODE_COUNT; i++) {
+			// Add another word with index random between 0 and 99
+			this._codes.push({code: words[this.randomIdx(99)], guesses: 0});
+		}
+		this._answerIdx = this.randomIdx(CODE_COUNT - 1);
+		return this._codes;
 	}
 }

@@ -1,0 +1,31 @@
+.title {
+
+}
+
+.subtitle {
+
+}
+
+.code-guess-container {
+	display: flex;
+}
+
+.code {
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+.guess {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	align-items: center;
+}
+
+.code-guess__code {
+	margin-bottom: 15px;
+}
+
+.code-guess__guess {
+	margin-bottom: 15px;
+}

@@ -1,8 +1,14 @@
 <mat-card>
 	<mat-card-title>Game Board</mat-card-title>
+	<mat-card-subtitle>Provided Codes</mat-card-subtitle>
 	<mat-card-content>
-		<div *ngFor="let word of words">
-			"{{ word }}",
+		<div class="code-guess-container">
+			<div class="code">
+				<div *ngFor="let code of codes" class="code-guess__code">{{code.code}}</div>
+			</div>
+			<div class="guess">
+				<div *ngFor="let code of codes" class="code-guess__guess">{{code.guesses}}</div>
+			</div>
 		</div>
 	</mat-card-content>
 </mat-card>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
-import { words } from '../game.service';
+import { Code } from '../common/code';
 
 @Component({
   selector: 'code-game-board',
@@ -8,12 +8,12 @@ import { words } from '../game.service';
   styleUrls: ['./game-board.component.scss']
 })
 export class GameBoardComponent implements OnInit {
-	public words: string[];
+	public codes: Code[] = [];
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-		this.words = this.gameService.getCodes();
+		this.codes = this.gameService.getCodes();
   }
 
 }

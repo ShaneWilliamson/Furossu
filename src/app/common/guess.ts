@@ -1,3 +1,3 @@
-export class Guess {
+export interface Guess {
 	value: string;
 }
