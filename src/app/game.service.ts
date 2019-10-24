@@ -16,7 +16,7 @@ export const words = [
 	"cadie",
 	"hosea",
 	"exter",
-	"tardo",
+	"codes",
 	"sensu",
 	"salty",
 	"beice",
@@ -53,7 +53,7 @@ export const words = [
 	"ghees",
 	"devex",
 	"boras",
-	"gaitt",
+	"crack",
 	"widen",
 	"lines",
 	"sutor",
@@ -66,7 +66,7 @@ export const words = [
 	"nahum",
 	"laeti",
 	"argid",
-	"skeeg",
+	"guess",
 	"diose",
 	"razed",
 	"bumfs",
@@ -80,7 +80,7 @@ export const words = [
 	"alite",
 	"riser",
 	"mauby",
-	"wierd",
+	"weird",
 	"marse",
 	"vined",
 	"gonzo",
@@ -121,5 +121,14 @@ export class GameService {
 	
 	public getGuesses(): Guess[] {
 		return this._guesses;
+	}
+
+	public getCodes(): string[] {
+		var ret = [];
+		for(var i = 0; i < 10; i++) {
+			// Add another word with index random between 0 and 99
+			ret.push(words[Math.floor(Math.random() * (99 + 1))]);
+		}
+		return ret;
 	}
 }
