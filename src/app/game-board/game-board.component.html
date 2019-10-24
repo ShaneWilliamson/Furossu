@@ -3,11 +3,11 @@
 	<mat-card-subtitle>Provided Codes</mat-card-subtitle>
 	<mat-card-content>
 		<div class="code-guess-container">
-			<div class="code">
-				<div *ngFor="let code of codes" class="code-guess__code">{{code.code}}</div>
-			</div>
-			<div class="guess">
-				<div *ngFor="let code of codes" class="code-guess__guess">{{code.guesses}}</div>
+			<div class="code-guess__wrapper">
+				<div class="code-guess" *ngFor="let code of codes">
+					<div>{{code.code}}</div>
+					<div>{{code.guesses}}</div>
+				</div>
 			</div>
 		</div>
 	</mat-card-content>

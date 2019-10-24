@@ -1,31 +1,24 @@
-.title {
-
-}
-
-.subtitle {
-
-}
-
 .code-guess-container {
 	display: flex;
 }
 
-.code {
-	flex-direction: column;
-	flex-grow: 1;
-}
-
-.guess {
+.code-guess__wrapper {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
 	align-items: center;
+	justify-content: space-around;
+	> div {
+		border-bottom: 1px solid #E0E0E0;
+	}
+	:last-child {
+		margin-bottom: 0;
+	}
 }
 
-.code-guess__code {
+.code-guess {
+	display: flex;
+	justify-content: space-between;
 	margin-bottom: 15px;
-}
-
-.code-guess__guess {
-	margin-bottom: 15px;
+	width: 100%;
 }
