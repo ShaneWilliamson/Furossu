@@ -95,7 +95,7 @@ export const words = [
 	"mooed",
 	"aided",
 	"stime",
-	"looby",
+	"light",
 	"tabus",
 	"neume",
 	"ostic",
