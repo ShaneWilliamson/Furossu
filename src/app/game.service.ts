@@ -121,6 +121,10 @@ export class GameService {
 	private _score: number;
 
 	constructor() {
+		this.resetState();
+	}
+
+	private resetState(): void {
 		this._guesses = [];
 		this._codes = [];
 		this._score = 0;
@@ -155,7 +159,14 @@ export class GameService {
 		return this._codes;
 	}
 
+	public getScore(): number {
+		return this._score;
+	}
+
 	public submitGuess(guess: Guess): void {
+		if (this._isGameOver) {
+			return;
+		}
 		this._guesses.push(guess);
 		if (this._guesses[this._answerIdx].value === guess.value) {
 			this._isGameOver = true;

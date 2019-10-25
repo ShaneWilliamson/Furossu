@@ -9,11 +9,12 @@ import { Code } from '../common/code';
 })
 export class GameBoardComponent implements OnInit {
 	public codes: Code[] = [];
+	public score: number = 0;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
 		this.codes = this.gameService.getCodes();
-  }
+	}
 
 }
