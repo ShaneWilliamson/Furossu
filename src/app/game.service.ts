@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Guess } from './common/guess';
 import { Code } from './common/code';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export const words = [
 	"koila",
@@ -113,70 +114,90 @@ const INCORRECT_GUESS_VALUE = -25;
 	providedIn: 'root'
 })
 export class GameService {
-	private _guesses: Guess[];
-	private _codes: Code[];
-	private _answerIdx: number;
-	private _isGameOver: boolean;
+	private guesses$$: BehaviorSubject<Guess[]> = new BehaviorSubject([]);
+	private guesses$: Observable<Guess[]> = this.guesses$$.asObservable();
+	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
+	private codes$: Observable<Code[]> = this.codes$$.asObservable();
 
-	private _score: number;
+	private answerIdx: number;
+	private isGameOver: boolean;
+
+	private score: number;
 
 	constructor() {
 		this.resetState();
+		var placeholders = [];
+		for(var i = 0; i < CODE_COUNT; i++) {
+			placeholders.push({code: "*****", "guesses": 0});
+		}
+		this.codes$$.next(placeholders);
 	}
 
 	private resetState(): void {
-		this._guesses = [];
-		this._codes = [];
-		this._score = 0;
-		this._isGameOver = false;
+		this.guesses$$.next([]);
+		this.codes$$.next([]);
+		this.score = 0;
+		this.isGameOver = false;
 	}
 
 	private randomIdx(maxIdx: number): number {
 		return Math.floor(Math.random() * (maxIdx + 1))
 	}
 
-	public getGuesses(): Guess[] {
-		return this._guesses;
+	public getGuesses(): Observable<Guess[]> {
+		return this.guesses$;
 	}
 
-	public getCodes(): Code[] {
-		if (!!this._codes && this._codes.length !== 0) {
-			return this._codes;
-		}
-		this._codes = [];
+	public getGuessesValue(): Guess[] {
+		return this.guesses$$.getValue();
+	}
+
+	public getCodes(): Observable<Code[]> {
+		return this.codes$;
+	}
+
+	public startGame(): void {
+		this.initializeCodes();
+	}
+
+	private initializeCodes(): void {
+		var codes = [];
 		var selectedCodes = {};
 		for (var i = 0; i < CODE_COUNT; i++) {
 			// Add another word with index random between 0 and 99
-			let word = words[this.randomIdx(99)]
+			let word = words[this.randomIdx(99)];
 			if (word in selectedCodes) {
 				i--;
 				continue;
 			}
 			selectedCodes[word] = true;
-			this._codes.push({ code: word, guesses: 0 });
+			codes.push({ code: word, guesses: 0 });
 		}
-		this._answerIdx = this.randomIdx(CODE_COUNT - 1);
-		return this._codes;
+		this.answerIdx = this.randomIdx(CODE_COUNT - 1);
+		this.codes$$.next(codes);
 	}
 
 	public getScore(): number {
-		return this._score;
+		return this.score;
 	}
 
-	public submitGuess(guess: Guess): void {
-		if (this._isGameOver) {
+	// Submits a guess, returns true if game is over (correctly guessed) or false otherwise
+	public submitGuess(guess: Guess): boolean {
+		if (this.isGameOver) {
 			return;
 		}
-		this._guesses.push(guess);
-		if (this._guesses[this._answerIdx].value === guess.value) {
-			this._isGameOver = true;
+		let guesses = [...this.guesses$$.getValue(), guess];
+		this.guesses$$.next([...this.guesses$$.getValue(), guess]);
+		if (this.codes$$.getValue()[this.answerIdx].code === guess.value) {
+			this.isGameOver = true;
 			this.addScore(CORRECT_GUESS_VALUE);
 		} else {
 			this.addScore(INCORRECT_GUESS_VALUE);
 		}
+		return this.isGameOver;
 	}
 
 	private addScore(value: number): void {
-		this._score += value;
+		this.score += value;
 	}
 }

@@ -7,10 +7,12 @@
 		</div>
 		<div class="code-guess-container">
 			<div class="code-guess__wrapper">
-				<div class="code-guess" *ngFor="let code of codes">
-					<div>{{code.code}}</div>
-					<div>{{code.guesses}}</div>
-				</div>
+				<ng-container *ngIf="codes$ | async as codes">
+					<div class="code-guess" *ngFor="let code of codes">
+						<div>{{code.code}}</div>
+						<div>{{code.guesses}}</div>
+					</div>
+				</ng-container>
 			</div>
 		</div>
 	</mat-card-content>
@@ -20,3 +22,4 @@
 		Score: {{score}}
 	</mat-card-content>
 </mat-card>
+<button mat-raised-button color="primary" (click)="start()">Start</button>

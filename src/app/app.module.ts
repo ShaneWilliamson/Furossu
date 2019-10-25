@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -21,6 +22,7 @@ import { GameBoardComponent } from './game-board/game-board.component';
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
+		MatButtonModule,
 		MatCardModule,
 		MatToolbarModule,
 		AppRoutingModule,
