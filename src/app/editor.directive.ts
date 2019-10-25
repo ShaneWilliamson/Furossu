@@ -1,6 +1,13 @@
 import { Directive, Renderer2, AfterViewInit } from '@angular/core';
 import { CmService, DEFAULT_SCRIPT } from './cm.service';
 import * as cm from 'codemirror';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/addon/lint/lint.js';
+import 'codemirror/addon/lint/javascript-lint.js';
+import 'codemirror/addon/edit/closebrackets.js';
+import 'codemirror/addon/edit/matchbrackets.js';
+import 'codemirror/addon/search/match-highlighter.js';
 (<any>window).JSHINT = require('jshint').JSHINT;
 
 @Directive({
