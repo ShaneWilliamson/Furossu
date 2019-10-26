@@ -3,12 +3,12 @@ import { CmService, DEFAULT_SCRIPT } from '../cm.service';
 import * as cm from 'codemirror';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/hint/javascript-hint.js';
+import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/addon/lint/lint.js';
 import 'codemirror/addon/lint/javascript-lint.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/search/match-highlighter.js';
-(<any>window).JSHINT = require('jshint').JSHINT;
 
 @Component({
   selector: 'code-home-page',
@@ -17,7 +17,9 @@ import 'codemirror/addon/search/match-highlighter.js';
 })
 export class HomePageComponent implements AfterViewInit {
 
-	constructor(private renderer: Renderer2, private cmService: CmService) { }
+	constructor(private renderer: Renderer2, private cmService: CmService) {
+		(<any>window).JSHINT = require('jshint').JSHINT;
+	}
 	
 	ngAfterViewInit(): void {
 		this.cmService.editor = cm.fromTextArea(

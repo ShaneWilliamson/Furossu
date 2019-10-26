@@ -27,6 +27,8 @@ $furossu-theme: mat-light-theme($furossu-primary, $furossu-accent, $furossu-warn
 @include angular-material-theme($furossu-theme);
 
 @import "~codemirror/lib/codemirror";
+@import "~codemirror/addon/lint/lint";
+@import "~codemirror/addon/hint/show-hint";
 
 #code-panel .CodeMirror {
 	height: 700px;
