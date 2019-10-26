@@ -11,13 +11,19 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { EditorDirective } from './editor.directive';
 import { GameBoardComponent } from './game-board/game-board.component';
+import { DocsPageComponent } from './docs-page/docs-page.component';
+import { LeaderboardPageComponent } from './leaderboard-page/leaderboard-page.component';
+import { MultiplayerPageComponent } from './multiplayer-page/multiplayer-page.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HomePageComponent,
 		EditorDirective,
-		GameBoardComponent
+		GameBoardComponent,
+		DocsPageComponent,
+		LeaderboardPageComponent,
+		MultiplayerPageComponent
 	],
 	imports: [
 		BrowserModule,
