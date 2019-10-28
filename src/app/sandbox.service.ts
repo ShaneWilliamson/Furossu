@@ -10,7 +10,6 @@ function Sandbox(gameState: GameState) {
 	this.setScript = function (script) {
 		let priorScript = this.script;
 		try {
-			debugger;
 			this.script = script;
 			eval('this.getGuess = ' + script + ';');
 			console.log('Script has been set.');

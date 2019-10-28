@@ -142,7 +142,6 @@ export class GameService {
 
 	private gameLoop(): void {
 		if (!this.isGameOver) {
-			debugger;
 			var gameState = this.backupGameState();
 			try {  // Wrapped in try-catch since getGuess is user code
 				var guess = this.sandboxService.sandbox.getGuess();
@@ -152,7 +151,6 @@ export class GameService {
 
 			this.doGuess(guess);
 			if (this.isGameOver) {
-				debugger;
 				clearInterval(this.intervalTimer);
 			}
 		}
