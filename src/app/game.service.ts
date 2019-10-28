@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Code } from './common/code';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { SandboxService } from './sandbox.service';
 import { GameState } from './common/gamestate';
 import { CmService } from './cm.service';
@@ -124,6 +124,9 @@ export class GameService {
 	private score$$: BehaviorSubject<number> = new BehaviorSubject(0);
 	public score$: Observable<number> = this.score$$.asObservable();
 
+	private saved$$: ReplaySubject<boolean> = new ReplaySubject(1);
+	public saved$: Observable<boolean> = this.saved$$.asObservable();
+
 	private answerIdx: number;
 	private isGameOver: boolean;
 	private gameState: GameState;
@@ -216,6 +219,7 @@ export class GameService {
 
 	public setScript(): void {
 		localStorage.setItem('code', this.cmService.getScript());
+		this.saved$$.next(true);
 	}
 
 	private backupGameState(): GameState {

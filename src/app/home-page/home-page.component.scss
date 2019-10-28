@@ -15,9 +15,19 @@
 }
 
 .panel-header {
+	margin-bottom: 0;
+}
+
+.header-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	margin-top: 15px;
 	margin-left: 15px;
-	margin-bottom: 0;
+	> div {
+		background: yellow;
+		margin-left: 15px;
+	}
 }
 
 .panel-content {

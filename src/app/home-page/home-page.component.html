@@ -3,7 +3,10 @@
 		<code-game-board></code-game-board>
 	</div>
 	<div class="panel-container">
-		<h2 class="mat-h2 panel-header">Your Script</h2>
+		<div class="header-container">
+			<h2 class="mat-h2 panel-header">Your Script</h2>
+			<div *ngIf="!(saved$ | async)">Your script is unsaved! Make sure you remember to save it!</div>
+		</div>
 		<div id="code-panel" class="panel-container__panel--large">
 			<div class="panel-content">
 				<textarea codeEditor></textarea>

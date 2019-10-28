@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 export const DEFAULT_SCRIPT: string = `function myfunc() {
   if (this.idx === undefined) {
@@ -16,7 +16,7 @@ export const DEFAULT_SCRIPT: string = `function myfunc() {
 export class CmService {
 	private editor$$: BehaviorSubject<any> = new BehaviorSubject(null);
 	public editor$: Observable<any> = this.editor$$.asObservable();
-	private isScriptChanged$$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+	private isScriptChanged$$: ReplaySubject<boolean> = new ReplaySubject(1);
 	public isScriptChanged$: Observable<boolean> = this.isScriptChanged$$.asObservable();
 
 	public setCM(cm: any): void {

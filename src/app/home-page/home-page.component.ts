@@ -9,6 +9,10 @@ import 'codemirror/addon/lint/javascript-lint.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/search/match-highlighter.js';
+import { Router } from '@angular/router';
+import { Observable, merge } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { GameService } from '../game.service';
 
 @Component({
   selector: 'code-home-page',
@@ -16,9 +20,16 @@ import 'codemirror/addon/search/match-highlighter.js';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements AfterViewInit {
+	saved$: Observable<boolean>;
 
-	constructor(private renderer: Renderer2, private cmService: CmService) {
+	constructor(private renderer: Renderer2, private cmService: CmService, private router: Router, private gameService: GameService) {
 		(<any>window).JSHINT = require('jshint').JSHINT;
+		this.saved$ = merge(
+			this.cmService.isScriptChanged$.pipe(map(isChanged => !isChanged)),
+			this.gameService.saved$
+		).pipe(
+			startWith(true)
+		);
 	}
 	
 	ngAfterViewInit(): void {
