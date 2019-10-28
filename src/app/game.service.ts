@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Code } from './common/code';
-import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject, merge } from 'rxjs';
 import { SandboxService } from './sandbox.service';
 import { GameState } from './common/gamestate';
 import { CmService } from './cm.service';
 import { GuessResult } from './common/guessresult';
+import { map, startWith } from 'rxjs/operators';
 
 export const words = [
 	"koila",
@@ -127,6 +128,9 @@ export class GameService {
 	private saved$$: ReplaySubject<boolean> = new ReplaySubject(1);
 	public saved$: Observable<boolean> = this.saved$$.asObservable();
 
+	public savedScript$$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+	public savedScript$: Observable<boolean> = this.savedScript$$.asObservable();
+
 	private answerIdx: number;
 	private isGameOver: boolean;
 	private gameState: GameState;
@@ -143,6 +147,12 @@ export class GameService {
 			placeholders.push({ code: "*****", "Is Guessed?": false });
 		}
 		this.codes$$.next(placeholders);
+		merge(
+			this.cmService.isScriptChanged$.pipe(map(isChanged => !isChanged)),
+			this.saved$
+		).pipe(
+			startWith(true)
+		).subscribe((val) => this.savedScript$$.next(val));
 	}
 
 	private gameLoop(): void {

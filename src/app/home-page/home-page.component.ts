@@ -10,44 +10,42 @@ import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/search/match-highlighter.js';
 import { Router } from '@angular/router';
-import { Observable, merge } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { Observable, merge, of } from 'rxjs';
 import { GameService } from '../game.service';
 
 @Component({
-  selector: 'code-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+	selector: 'code-home-page',
+	templateUrl: './home-page.component.html',
+	styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements AfterViewInit {
 	saved$: Observable<boolean>;
 
 	constructor(private renderer: Renderer2, private cmService: CmService, private router: Router, private gameService: GameService) {
 		(<any>window).JSHINT = require('jshint').JSHINT;
-		this.saved$ = merge(
-			this.cmService.isScriptChanged$.pipe(map(isChanged => !isChanged)),
-			this.gameService.saved$
-		).pipe(
-			startWith(true)
-		);
+		this.saved$ = this.gameService.savedScript$;
 	}
-	
+
 	ngAfterViewInit(): void {
 		this.cmService.setCM(cm.fromTextArea(
 			this.renderer.selectRootElement('[codeEditor]'),
 			{
 				lineNumbers: true,
 				mode: "javascript",
-        gutters: ["CodeMirror-lint-markers"],
-        lint: true,
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        highlightSelectionMatches: {showToken: /\w/},
-        viewportMargin: Infinity
+				gutters: ["CodeMirror-lint-markers"],
+				lint: true,
+				autoCloseBrackets: true,
+				matchBrackets: true,
+				highlightSelectionMatches: { showToken: /\w/ },
+				viewportMargin: Infinity
 			}
 		));
 		let script = localStorage.getItem('code') ? localStorage.getItem('code') : DEFAULT_SCRIPT;
 		this.cmService.setScript(script);
 	}
+
+	canDeactivate(): Observable<boolean> {
+		return this.gameService.savedScript$$.getValue() ? of(true) : of(window.confirm('Leave without saving script?'));
+	};
 
 }
