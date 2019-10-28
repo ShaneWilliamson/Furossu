@@ -164,14 +164,15 @@ export class GameService {
 				this.restoreGameState(gameState);
 			}
 
-			this.doGuess(guess);
+			let newCodes = this.doGuess(guess);
 			if (this.isGameOver) {
 				clearInterval(this.intervalTimer);
 			}
+			this.gameState.codes = newCodes;
 		}
 	}
 
-	private doGuess(guess: string): void {
+	private doGuess(guess: string): Code[] {
 		if (this.isGameOver) {
 			return;
 		}
@@ -193,15 +194,28 @@ export class GameService {
 				if (codes[i].isGuessed) {
 					console.log("INVALID GUESS! Already guessed: " + guess);
 					this.isGameOver = true;
-					return;
+					return codes;
 				}
 				codes[i].isGuessed = true;
-				return;
+				codes[i].likeness = this.getLikeness(guess);
+				return codes;
 			}
 		}
 		console.log("INVALID GUESS! Code not found");
 		this.isGameOver = true;
-		return;
+		return codes;
+	}
+
+	private getLikeness(guess: string): number {
+		let likeness = 0;
+		let answer = this.gameState.codes[this.answerIdx].code;
+		for(var i = 0; i < answer.length; i++) {
+			if(guess[i] === answer[i]) {
+				likeness++;
+			}
+		}
+		console.log('likeness: ' + likeness);
+		return likeness;
 	}
 
 	private setIntervalTimer(): void {
@@ -274,7 +288,7 @@ export class GameService {
 				continue;
 			}
 			selectedCodes[word] = true;
-			codes.push({ code: word, isGuessed: false });
+			codes.push({ code: word, isGuessed: false, likeness: -1 });
 		}
 		this.answerIdx = this.randomIdx(CODE_COUNT - 1);
 		this.codes$$.next(codes);
