@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { GameState } from './common/gamestate';
 import { DEFAULT_SCRIPT } from './cm.service';
 
+class Sandbox{
+	sandbox = function () {
+		// API
+		var getCodes = function (): Code[] {
+			return this.gameState.codes;
+		}
+	}
+}
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -15,10 +24,12 @@ export class SandboxService {
 	}
 
 	// Will be overwritten
-	public getGuess(): any {};
+	public getGuess(): any { };
 
 	public initializeGame(): void {
-		this.getGuess = function() {};
+		this.getGuess = function () { };
+		var self = this;
+		this.sandbox = new Sandbox(); // todo
 	}
 
 	public setScript(script: string): void {

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Guess } from './common/guess';
 import { Code } from './common/code';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SandboxService } from './sandbox.service';
@@ -117,8 +116,8 @@ const INCORRECT_GUESS_VALUE = -25;
 	providedIn: 'root'
 })
 export class GameService {
-	private guesses$$: BehaviorSubject<Guess[]> = new BehaviorSubject([]);
-	private guesses$: Observable<Guess[]> = this.guesses$$.asObservable();
+	private guesses$$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+	private guesses$: Observable<string[]> = this.guesses$$.asObservable();
 	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
 	private codes$: Observable<Code[]> = this.codes$$.asObservable();
 
@@ -157,7 +156,7 @@ export class GameService {
 		}
 	}
 
-	private doGuess(guess: Guess): void {
+	private doGuess(guess: string): void {
 		if (this.isGameOver) {
 			return;
 		}
@@ -226,11 +225,11 @@ export class GameService {
 		return Math.floor(Math.random() * (maxIdx + 1))
 	}
 
-	public getGuesses(): Observable<Guess[]> {
+	public getGuesses(): Observable<string[]> {
 		return this.guesses$;
 	}
 
-	public getGuessesValue(): Guess[] {
+	public getGuessesValue(): string[] {
 		return this.guesses$$.getValue();
 	}
 

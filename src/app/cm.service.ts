@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-export const DEFAULT_SCRIPT: string = "var foo = \"\";";
+export const DEFAULT_SCRIPT: string = `function myfunc() {
+  if (this.idx === undefined) {
+    this.idx = 0;
+  }
+  var guess = this.getCodes()[this.idx];
+  this.idx++;
+  return guess.code;
+}`;
 
 @Injectable({
   providedIn: 'root'
