@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { SandboxService } from './sandbox.service';
 import { GameState } from './common/gamestate';
 import { CmService } from './cm.service';
+import { GuessResult } from './common/guessresult';
 
 export const words = [
 	"koila",
@@ -116,8 +117,8 @@ const INCORRECT_GUESS_VALUE = -25;
 	providedIn: 'root'
 })
 export class GameService {
-	private guessResult$$: BehaviorSubject<string[]> = new BehaviorSubject([]);
-	private guessResult$: Observable<string[]> = this.guessResult$$.asObservable();
+	private guessResults$$: BehaviorSubject<GuessResult[]> = new BehaviorSubject([]);
+	public guessResults$: Observable<GuessResult[]> = this.guessResults$$.asObservable();
 	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
 	private codes$: Observable<Code[]> = this.codes$$.asObservable();
 	private score$$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -161,17 +162,19 @@ export class GameService {
 		if (this.isGameOver) {
 			return;
 		}
-		this.guessResult$$.next([...this.guessResult$$.getValue(), `Guess: ${guess}; Score: ${this.score$$.getValue()}`]);
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
 		if (answerCode.code === guess) {
 			console.log("Correct guess!");
 			this.isGameOver = true;
+			debugger;
 			answerCode.isGuessed = true;
-			this.addScore(CORRECT_GUESS_VALUE);
+			const newScore = this.addScore(CORRECT_GUESS_VALUE);
+			this.guessResults$$.next([...this.guessResults$$.getValue(), {guess: guess, score: newScore, isAnswer: true}]);
 			return;
 		} else {
-			this.addScore(INCORRECT_GUESS_VALUE);
+			const newScore = this.addScore(INCORRECT_GUESS_VALUE);
+			this.guessResults$$.next([...this.guessResults$$.getValue(), {guess: guess, score: newScore, isAnswer: false}]);
 		}
 		for (var i = 0; i < this.gameState.codes.length; i++) {
 			if (guess === codes[i].code) {
@@ -219,7 +222,7 @@ export class GameService {
 	}
 
 	private resetState(): void {
-		this.guessResult$$.next([]);
+		this.guessResults$$.next([]);
 		this.codes$$.next([]);
 		this.score$$.next(0);
 		this.isGameOver = true;
@@ -228,14 +231,6 @@ export class GameService {
 
 	private randomIdx(maxIdx: number): number {
 		return Math.floor(Math.random() * (maxIdx + 1))
-	}
-
-	public getGuesses(): Observable<string[]> {
-		return this.guessResult$;
-	}
-
-	public getGuessesValue(): string[] {
-		return this.guessResult$$.getValue();
 	}
 
 	public getCodes(): Observable<Code[]> {
@@ -263,7 +258,9 @@ export class GameService {
 		this.codes$$.next(codes);
 	}
 
-	private addScore(value: number): void {
-		this.score$$.next(this.score$$.getValue() + value);
+	private addScore(value: number): number {
+		const newScore = this.score$$.getValue() + value
+		this.score$$.next(newScore);
+		return newScore;
 	}
 }

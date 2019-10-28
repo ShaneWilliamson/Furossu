@@ -7,10 +7,10 @@
 		</div>
 		<div class="code-guess-container">
 			<div class="code-guess__wrapper">
-				<ng-container *ngIf="codes$ | async as codes">
-					<div class="code-guess" *ngFor="let code of codes">
-						<div>{{code.code}}</div>
-						<div>{{code.isGuessed}}</div>
+				<ng-container *ngIf="guessResults$ | async as results">
+					<div class="code-guess" *ngFor="let res of results">
+						<div [ngClass]="{'answer': res.isAnswer}">Guess: {{ res.guess }};</div>
+						<div [ngClass]="{'answer': res.isAnswer}">Score: {{ res.score }}</div>
 					</div>
 				</ng-container>
 			</div>
