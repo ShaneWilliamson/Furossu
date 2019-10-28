@@ -45,7 +45,12 @@ export class HomePageComponent implements AfterViewInit {
 	}
 
 	canDeactivate(): Observable<boolean> {
-		return this.gameService.savedScript$$.getValue() ? of(true) : of(window.confirm('Leave without saving script?'));
+		// kinda hacky
+		const answer = this.gameService.savedScript$$.getValue() ? true : window.confirm('Leave without saving script?');
+		if (answer) {
+			this.gameService.savedScript$$.next(true);
+		}
+		return of(answer);
 	};
 
 }
