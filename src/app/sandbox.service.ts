@@ -1,7 +1,28 @@
 import { Injectable } from '@angular/core';
 import { GameState } from './common/gamestate';
 import { DEFAULT_SCRIPT } from './cm.service';
-import { Code } from './common/code';
+
+function Sandbox(gameState: GameState) {
+	this.codes = gameState.codes;
+	this.script = gameState.script;
+
+	this.getGuess = function () { };
+	this.setScript = function (script) {
+		let priorScript = this.script;
+		try {
+			debugger;
+			this.script = script;
+			eval('this.getGuess = ' + script + ';');
+			console.log('Script has been set.');
+		} catch (e) {
+			this.script = priorScript;
+			console.log();
+		}
+	};
+	this.getCodes = function() {
+		return this.codes;
+	};
+}
 
 @Injectable({
 	providedIn: 'root'
@@ -15,28 +36,9 @@ export class SandboxService {
 		this.gameState.script = DEFAULT_SCRIPT;
 	}
 
-	// Will be overwritten
-	public getGuess(): any {};
-
-	public initializeGame(): void {
-		this.getGuess = function() {};
-	}
-
-	// API
-	private getCodes(): Code[] {
-		return this.gameState.codes;
-	}
-
-	public setScript(script: string): void {
-		let priorScript = this.gameState.script;
-		try {
-			this.gameState.script = script;
-			eval('this.getGuess = ' + script + ';');
-			console.log('Script has been set.');
-		} catch (e) {
-			this.gameState.script = priorScript;
-			console.log();
-		}
+	public initializeGame(gameState: GameState): void {
+		var gs = Object.freeze(gameState);
+		this.sandbox = new Sandbox(gs); // todo
 	}
 
 	public setCodes(codes: Code[]): void {

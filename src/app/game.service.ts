@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Guess } from './common/guess';
 import { Code } from './common/code';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { SandboxService } from './sandbox.service';
@@ -117,8 +116,8 @@ const INCORRECT_GUESS_VALUE = -25;
 	providedIn: 'root'
 })
 export class GameService {
-	private guesses$$: BehaviorSubject<Guess[]> = new BehaviorSubject([]);
-	private guesses$: Observable<Guess[]> = this.guesses$$.asObservable();
+	private guesses$$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+	private guesses$: Observable<string[]> = this.guesses$$.asObservable();
 	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
 	private codes$: Observable<Code[]> = this.codes$$.asObservable();
 
@@ -146,26 +145,27 @@ export class GameService {
 			debugger;
 			var gameState = this.backupGameState();
 			try {  // Wrapped in try-catch since getGuess is user code
-				var guess = {value: this.sandboxService.getGuess()};
+				var guess = this.sandboxService.sandbox.getGuess();
 			} finally {
 				this.restoreGameState(gameState);
 			}
 
 			this.doGuess(guess);
 			if (this.isGameOver) {
+				debugger;
 				clearInterval(this.intervalTimer);
 			}
 		}
 	}
 
-	private doGuess(guess: Guess): void {
+	private doGuess(guess: string): void {
 		if (this.isGameOver) {
 			return;
 		}
 		this.guesses$$.next([...this.guesses$$.getValue(), guess]);
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
-		if (answerCode.code === guess.value) {
+		if (answerCode.code === guess) {
 			console.log("Correct guess!");
 			this.isGameOver = true;
 			answerCode.guesses += 1;
@@ -175,7 +175,7 @@ export class GameService {
 			this.addScore(INCORRECT_GUESS_VALUE);
 		}
 		for (var i = 0; i < this.gameState.codes.length; i++) {
-			if (guess.value === codes[i].code) {
+			if (guess === codes[i].code) {
 				codes[i].guesses += 1;
 			}
 		}
@@ -194,12 +194,10 @@ export class GameService {
 		var script = this.cmService.getScript();
 		if (this.isGameOver && script) {
 			this.initializeCodes();
-			this.sandboxService.initializeGame();
 			this.gameState.script = script;
 			this.gameState.codes = this.getCodesValue();
-			var gs = Object.freeze(this.gameState);
-			this.sandboxService.setCodes(gs.codes);
-			this.sandboxService.setScript(gs.script);
+			this.sandboxService.initializeGame(this.gameState);
+			this.sandboxService.sandbox.setScript(this.gameState.script);
 			this.isGameOver = false;
 			this.setIntervalTimer();
 		}
@@ -228,11 +226,11 @@ export class GameService {
 		return Math.floor(Math.random() * (maxIdx + 1))
 	}
 
-	public getGuesses(): Observable<Guess[]> {
+	public getGuesses(): Observable<string[]> {
 		return this.guesses$;
 	}
 
-	public getGuessesValue(): Guess[] {
+	public getGuessesValue(): string[] {
 		return this.guesses$$.getValue();
 	}
 
