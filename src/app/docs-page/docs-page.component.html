@@ -21,6 +21,12 @@ Your code must be in the following syntax in order to work:
 
 <p class="mat-body">All built-in game state variables are backed up prior to, and restored after, your function runs. This prevents tampering.</p>
 
+<h2>"Likeness"</h2>
+
+<p class="mat-body">A word's likeness is determined by whether or not the string's individual character values of the word match with the answer word's values in both index of the string, and in character value.</p>
+
+<p class="mat-body">e.g. If "ghost" is the answer, and you guess "ghast", the likeness would be 4. However, if you guessed "roast", the likeness would only be 2, as only "s" and "t" would match in both index and value.</p>
+
 <mat-divider class="divider"></mat-divider>
 
 <h1 class="mat-h1">Functions</h1>
@@ -33,7 +39,7 @@ Your code must be in the following syntax in order to work:
 	</thead>
 	<tbody>
 			<tr><td><code>self.getCodes()</code></td>
-			<td>The list of possible codes you can guess. The array of codes returned from this function are <b>not</b> string values, they are objects with two fields on them, <code>code</code> and <code>isGuessed</code>. The <code>code</code> field on each object tells you the actual string value, while the <code>isGuessed</code> field tells you whether or not you have guessed that code yet.</td></tr>
+			<td>The list of possible codes you can guess. The array of codes returned from this function are <b>not</b> string values, they are objects with three fields on them, <code>code</code>, <code>isGuessed</code>, and <code>likeness</code>. The <code>code</code> field on each object tells you the actual string value, the <code>isGuessed</code> field tells you whether or not you have guessed that code yet, and finally the <code>likeness</code> field tells you the likeness to the answer (a <code>-1</code> means it hasn't been guessed yet, so there isn't a likeness assigned).</td></tr>
 	</tbody>
 </table>
 </div>
