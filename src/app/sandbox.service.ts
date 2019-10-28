@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameState } from './common/gamestate';
 import { DEFAULT_SCRIPT } from './cm.service';
+import { Code } from './common/code';
 
 @Injectable({
 	providedIn: 'root'
@@ -21,10 +22,14 @@ export class SandboxService {
 		this.getGuess = function() {};
 	}
 
+	// API
+	private getCodes(): Code[] {
+		return this.gameState.codes;
+	}
+
 	public setScript(script: string): void {
 		let priorScript = this.gameState.script;
 		try {
-			debugger;
 			this.gameState.script = script;
 			eval('this.getGuess = ' + script + ';');
 			console.log('Script has been set.');
@@ -32,5 +37,9 @@ export class SandboxService {
 			this.gameState.script = priorScript;
 			console.log();
 		}
+	}
+
+	public setCodes(codes: Code[]): void {
+		this.gameState.codes = codes;
 	}
 }

@@ -143,6 +143,7 @@ export class GameService {
 
 	private gameLoop(): void {
 		if (!this.isGameOver) {
+			debugger;
 			var gameState = this.backupGameState();
 			try {  // Wrapped in try-catch since getGuess is user code
 				var guess = {value: this.sandboxService.getGuess()};
@@ -192,12 +193,13 @@ export class GameService {
 	public start(): void {
 		var script = this.cmService.getScript();
 		if (this.isGameOver && script) {
-			debugger;
 			this.initializeCodes();
 			this.sandboxService.initializeGame();
 			this.gameState.script = script;
 			this.gameState.codes = this.getCodesValue();
-			this.sandboxService.setScript(this.gameState.script);
+			var gs = Object.freeze(this.gameState);
+			this.sandboxService.setCodes(gs.codes);
+			this.sandboxService.setScript(gs.script);
 			this.isGameOver = false;
 			this.setIntervalTimer();
 		}
