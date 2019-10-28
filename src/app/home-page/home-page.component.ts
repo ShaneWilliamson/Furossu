@@ -22,7 +22,7 @@ export class HomePageComponent implements AfterViewInit {
 	}
 	
 	ngAfterViewInit(): void {
-		this.cmService.editor = cm.fromTextArea(
+		this.cmService.setCM(cm.fromTextArea(
 			this.renderer.selectRootElement('[codeEditor]'),
 			{
 				lineNumbers: true,
@@ -34,8 +34,8 @@ export class HomePageComponent implements AfterViewInit {
         highlightSelectionMatches: {showToken: /\w/},
         viewportMargin: Infinity
 			}
-		);
-		this.cmService.editor.setValue(DEFAULT_SCRIPT);
+		));
+		this.cmService.setScript(DEFAULT_SCRIPT);
 	}
 
 }

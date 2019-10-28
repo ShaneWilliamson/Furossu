@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
 import { Code } from '../common/code';
 import { Observable } from 'rxjs';
+import { CmService } from '../cm.service';
 
 @Component({
   selector: 'code-game-board',
@@ -14,12 +15,12 @@ export class GameBoardComponent implements OnInit {
 
   constructor(private gameService: GameService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
 		this.codes$ = this.gameService.getCodes();
 	}
 
-	start() {
-		this.gameService.startGame();
+	start(): void {
+		this.gameService.start();
 	}
 
 }

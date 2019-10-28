@@ -97,7 +97,7 @@ function BattleshipChallengeViewModel(canvas) {
         try {
             self.game.setGetMoveFunction(code);
             self.code = code;
-            console.log('Script has been set.')
+            console.log('Script has been set.');
         } catch (e) {
             console.error('Set script failed: ' + e.message);
             // eval with a script that is known to be good, so that behavior is better defined
