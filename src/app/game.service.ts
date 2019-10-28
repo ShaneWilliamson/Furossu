@@ -203,6 +203,10 @@ export class GameService {
 		}
 	};
 
+	public setScript(): void {
+		localStorage.setItem('code', this.cmService.getScript());
+	}
+
 	private backupGameState(): GameState {
 		var gameState = this.gameState;
 		return Object.freeze(gameState);

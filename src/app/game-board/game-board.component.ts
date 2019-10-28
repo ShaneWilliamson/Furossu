@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
 import { Code } from '../common/code';
 import { Observable } from 'rxjs';
-import { CmService } from '../cm.service';
 
 @Component({
   selector: 'code-game-board',
@@ -23,6 +22,10 @@ export class GameBoardComponent implements OnInit {
 
 	start(): void {
 		this.gameService.start();
+	}
+
+	setScript(): void {
+		this.gameService.setScript();
 	}
 
 }

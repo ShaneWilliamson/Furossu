@@ -35,7 +35,8 @@ export class HomePageComponent implements AfterViewInit {
         viewportMargin: Infinity
 			}
 		));
-		this.cmService.setScript(DEFAULT_SCRIPT);
+		let script = localStorage.getItem('code') ? localStorage.getItem('code') : DEFAULT_SCRIPT;
+		this.cmService.setScript(script);
 	}
 
 }
