@@ -11,13 +11,11 @@ Your code must be in the following syntax in order to work:
 {{ '}' }}
 </code></pre>
 
-            
-
 <p class="mat-body">Keep all code in a <b>single function</b> (inner functions are allowed).</p>
 
-<p class="mat-body">If your code returns an invalid move (like a coordinate already hit, or one outside the board) it will end the game.</p>
+<p class="mat-body">If your code returns an invalid guess (like a code that doesn't exist, or that has already been guessed) it will end the game.</p>
 
-<p class="mat-body">You have access to the <code>this</code> variable to save state between moves if you wish, as well as access to game state.</p>
+<p class="mat-body">You have access to the <code>this</code> variable to save state between guesses if you wish, as well as access to game state.</p>
 
 <p class="mat-body">Logging is available through <code>console.log(message)</code>. You can also use <code>console.error(message)</code>, <code>console.warn(message)</code>, and console.debug(message).</p>
 
@@ -35,7 +33,7 @@ Your code must be in the following syntax in order to work:
 	</thead>
 	<tbody>
 			<tr><td><code>self.getCodes()</code></td>
-			<td>The list of possible codes you can guess.</td></tr>
+			<td>The list of possible codes you can guess. The array of codes returned from this function are <b>not</b> string values, they are objects with two fields on them, <code>code</code> and <code>isGuessed</code>. The <code>code</code> field on each object tells you the actual string value, while the <code>isGuessed</code> field tells you whether or not you have guessed that code yet.</td></tr>
 	</tbody>
 </table>
 </div>
