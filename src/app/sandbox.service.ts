@@ -40,8 +40,4 @@ export class SandboxService {
 		var gs = Object.freeze(gameState);
 		this.sandbox = new Sandbox(gs); // todo
 	}
-
-	public setCodes(codes: Code[]): void {
-		this.gameState.codes = codes;
-	}
 }
