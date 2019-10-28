@@ -11,9 +11,11 @@ import { CmService } from '../cm.service';
 })
 export class GameBoardComponent implements OnInit {
 	public codes$: Observable<Code[]>;
-	public score: number = 0;
+	public score$: Observable<number>;
 
-  constructor(private gameService: GameService) { }
+  constructor(private gameService: GameService) {
+		this.score$ = this.gameService.score$;
+	}
 
   ngOnInit(): void {
 		this.codes$ = this.gameService.getCodes();

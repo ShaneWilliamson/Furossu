@@ -120,11 +120,12 @@ export class GameService {
 	private guessResult$: Observable<string[]> = this.guessResult$$.asObservable();
 	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
 	private codes$: Observable<Code[]> = this.codes$$.asObservable();
+	private score$$: BehaviorSubject<number> = new BehaviorSubject(0);
+	public score$: Observable<number> = this.score$$.asObservable();
 
 	private answerIdx: number;
 	private isGameOver: boolean;
 	private gameState: GameState;
-	private score: number;
 	private speed: number = 10;
 
 	private intervalTimer: NodeJS.Timer;
@@ -160,7 +161,7 @@ export class GameService {
 		if (this.isGameOver) {
 			return;
 		}
-		this.guessResult$$.next([...this.guessResult$$.getValue(), `Guess: ${guess}; Score: ${this.score}`]);
+		this.guessResult$$.next([...this.guessResult$$.getValue(), `Guess: ${guess}; Score: ${this.score$$.getValue()}`]);
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
 		if (answerCode.code === guess) {
@@ -191,6 +192,7 @@ export class GameService {
 	public start(): void {
 		var script = this.cmService.getScript();
 		if (this.isGameOver && script) {
+			this.resetState();
 			this.initializeCodes();
 			this.gameState.script = script;
 			this.gameState.codes = this.getCodesValue();
@@ -215,7 +217,7 @@ export class GameService {
 	private resetState(): void {
 		this.guessResult$$.next([]);
 		this.codes$$.next([]);
-		this.score = 0;
+		this.score$$.next(0);
 		this.isGameOver = true;
 		this.gameState = new GameState();
 	}
@@ -257,11 +259,7 @@ export class GameService {
 		this.codes$$.next(codes);
 	}
 
-	public getScore(): number {
-		return this.score;
-	}
-
 	private addScore(value: number): void {
-		this.score += value;
+		this.score$$.next(this.score$$.getValue() + value);
 	}
 }

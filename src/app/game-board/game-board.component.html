@@ -19,7 +19,7 @@
 </mat-card>
 <mat-card class="card mat-elevation-z8">
 	<mat-card-content>
-		Score: {{score}}
+		Score: {{score$ | async}}
 	</mat-card-content>
 </mat-card>
 <button mat-raised-button color="primary" (click)="start()">Start</button>
