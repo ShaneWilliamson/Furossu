@@ -167,7 +167,6 @@ export class GameService {
 		if (answerCode.code === guess) {
 			console.log("Correct guess!");
 			this.isGameOver = true;
-			debugger;
 			answerCode.isGuessed = true;
 			const newScore = this.addScore(CORRECT_GUESS_VALUE);
 			this.guessResults$$.next([...this.guessResults$$.getValue(), {guess: guess, score: newScore, isAnswer: true}]);
