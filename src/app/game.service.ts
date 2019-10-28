@@ -177,9 +177,18 @@ export class GameService {
 		}
 		for (var i = 0; i < this.gameState.codes.length; i++) {
 			if (guess === codes[i].code) {
+				if (codes[i].isGuessed) {
+					console.log("INVALID GUESS! Already guessed: " + guess);
+					this.isGameOver = true;
+					return;
+				}
 				codes[i].isGuessed = true;
+				return;
 			}
 		}
+		console.log("INVALID GUESS! Code not found");
+		this.isGameOver = true;
+		return;
 	}
 
 	private setIntervalTimer(): void {
