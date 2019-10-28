@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +29,7 @@ import { MultiplayerPageComponent } from './multiplayer-page/multiplayer-page.co
 		BrowserAnimationsModule,
 		MatButtonModule,
 		MatCardModule,
+		MatDividerModule,
 		MatToolbarModule,
 		AppRoutingModule,
 	],

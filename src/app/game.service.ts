@@ -116,8 +116,8 @@ const INCORRECT_GUESS_VALUE = -25;
 	providedIn: 'root'
 })
 export class GameService {
-	private guesses$$: BehaviorSubject<string[]> = new BehaviorSubject([]);
-	private guesses$: Observable<string[]> = this.guesses$$.asObservable();
+	private guessResult$$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+	private guessResult$: Observable<string[]> = this.guessResult$$.asObservable();
 	private codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
 	private codes$: Observable<Code[]> = this.codes$$.asObservable();
 
@@ -135,7 +135,7 @@ export class GameService {
 		this.resetState();
 		var placeholders = [];
 		for (var i = 0; i < CODE_COUNT; i++) {
-			placeholders.push({ code: "*****", "guesses": 0 });
+			placeholders.push({ code: "*****", "Is Guessed?": false });
 		}
 		this.codes$$.next(placeholders);
 	}
@@ -160,13 +160,13 @@ export class GameService {
 		if (this.isGameOver) {
 			return;
 		}
-		this.guesses$$.next([...this.guesses$$.getValue(), guess]);
+		this.guessResult$$.next([...this.guessResult$$.getValue(), `Guess: ${guess}; Score: ${this.score}`]);
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
 		if (answerCode.code === guess) {
 			console.log("Correct guess!");
 			this.isGameOver = true;
-			answerCode.guesses += 1;
+			answerCode.isGuessed = true;
 			this.addScore(CORRECT_GUESS_VALUE);
 			return;
 		} else {
@@ -174,7 +174,7 @@ export class GameService {
 		}
 		for (var i = 0; i < this.gameState.codes.length; i++) {
 			if (guess === codes[i].code) {
-				codes[i].guesses += 1;
+				codes[i].isGuessed = true;
 			}
 		}
 	}
@@ -213,7 +213,7 @@ export class GameService {
 	}
 
 	private resetState(): void {
-		this.guesses$$.next([]);
+		this.guessResult$$.next([]);
 		this.codes$$.next([]);
 		this.score = 0;
 		this.isGameOver = true;
@@ -225,11 +225,11 @@ export class GameService {
 	}
 
 	public getGuesses(): Observable<string[]> {
-		return this.guesses$;
+		return this.guessResult$;
 	}
 
 	public getGuessesValue(): string[] {
-		return this.guesses$$.getValue();
+		return this.guessResult$$.getValue();
 	}
 
 	public getCodes(): Observable<Code[]> {
@@ -251,7 +251,7 @@ export class GameService {
 				continue;
 			}
 			selectedCodes[word] = true;
-			codes.push({ code: word, guesses: 0 });
+			codes.push({ code: word, isGuessed: false });
 		}
 		this.answerIdx = this.randomIdx(CODE_COUNT - 1);
 		this.codes$$.next(codes);

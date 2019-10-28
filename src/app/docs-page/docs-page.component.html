@@ -1,1 +1,41 @@
-<p>docs-page works!</p>
+<div class="page-container">
+<h1 class="mat-h1">Overview</h1>
+
+Your code must be in the following syntax in order to work:
+
+<pre><code>function yourScript() {{ '{' }}
+	
+	// your logic goes here...
+
+	return 'guess';  // string value of what your guess is
+{{ '}' }}
+</code></pre>
+
+            
+
+<p class="mat-body">Keep all code in a <b>single function</b> (inner functions are allowed).</p>
+
+<p class="mat-body">If your code returns an invalid move (like a coordinate already hit, or one outside the board) it will end the game.</p>
+
+<p class="mat-body">You have access to the <code>this</code> variable to save state between moves if you wish, as well as access to game state.</p>
+
+<p class="mat-body">Logging is available through <code>console.log(message)</code>. You can also use <code>console.error(message)</code>, <code>console.warn(message)</code>, and console.debug(message).</p>
+
+<p class="mat-body">All built-in game state variables are backed up prior to, and restored after, your function runs. This prevents tampering.</p>
+
+<mat-divider class="divider"></mat-divider>
+
+<h1 class="mat-h1">Functions</h1>
+<table class="table table-bordered table-striped">
+	<thead>
+	<tr>
+			<th><div class="mat-h2">Function</div></th>
+			<th><div class="mat-h2">Description</div></th>
+	</tr>
+	</thead>
+	<tbody>
+			<tr><td><code>self.getCodes()</code></td>
+			<td>The list of possible codes you can guess.</td></tr>
+	</tbody>
+</table>
+</div>

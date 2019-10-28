@@ -10,7 +10,7 @@
 				<ng-container *ngIf="codes$ | async as codes">
 					<div class="code-guess" *ngFor="let code of codes">
 						<div>{{code.code}}</div>
-						<div>{{code.guesses}}</div>
+						<div>{{code.isGuessed}}</div>
 					</div>
 				</ng-container>
 			</div>

@@ -3,12 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LeaderboardPageComponent } from './leaderboard-page/leaderboard-page.component';
 import { MultiplayerPageComponent } from './multiplayer-page/multiplayer-page.component';
+import { DocsPageComponent } from './docs-page/docs-page.component';
 
 
 const routes: Routes = [
 	{
 		path: '',
 		component: HomePageComponent,
+	},
+	{
+		path: 'docs',
+		component: DocsPageComponent,
 	},
 	{
 		path: 'leaderboard',
