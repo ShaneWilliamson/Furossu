@@ -144,13 +144,14 @@ export class GameService {
 		if (!this.isGameOver) {
 			var gameState = this.backupGameState();
 			try {  // Wrapped in try-catch since getGuess is user code
-				var guess = {value: this.sandboxService.getGuess()};
+				var guess = this.sandboxService.sandbox.getGuess();
 			} finally {
 				this.restoreGameState(gameState);
 			}
 
 			this.doGuess(guess);
 			if (this.isGameOver) {
+				debugger;
 				clearInterval(this.intervalTimer);
 			}
 		}
@@ -163,7 +164,7 @@ export class GameService {
 		this.guesses$$.next([...this.guesses$$.getValue(), guess]);
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
-		if (answerCode.code === guess.value) {
+		if (answerCode.code === guess) {
 			console.log("Correct guess!");
 			this.isGameOver = true;
 			answerCode.guesses += 1;
@@ -173,7 +174,7 @@ export class GameService {
 			this.addScore(INCORRECT_GUESS_VALUE);
 		}
 		for (var i = 0; i < this.gameState.codes.length; i++) {
-			if (guess.value === codes[i].code) {
+			if (guess === codes[i].code) {
 				codes[i].guesses += 1;
 			}
 		}
@@ -191,12 +192,11 @@ export class GameService {
 	public start(): void {
 		var script = this.cmService.getScript();
 		if (this.isGameOver && script) {
-			debugger;
 			this.initializeCodes();
-			this.sandboxService.initializeGame();
 			this.gameState.script = script;
 			this.gameState.codes = this.getCodesValue();
-			this.sandboxService.setScript(this.gameState.script);
+			this.sandboxService.initializeGame(this.gameState);
+			this.sandboxService.sandbox.setScript(this.gameState.script);
 			this.isGameOver = false;
 			this.setIntervalTimer();
 		}
