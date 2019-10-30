@@ -6,6 +6,7 @@ import { GameState } from './common/gamestate';
 import { CmService } from './cm.service';
 import { GuessResult } from './common/guessresult';
 import { map, startWith } from 'rxjs/operators';
+import { FirestoreService } from './firestore.service';
 
 export const words = [
 	"koila",
@@ -138,9 +139,7 @@ export class GameService {
 
 	private intervalTimer: NodeJS.Timer;
 
-	// user code
-
-	constructor(private cmService: CmService, private sandboxService: SandboxService) {
+	constructor(private cmService: CmService, private sandboxService: SandboxService, private fireService: FirestoreService) {
 		this.resetState();
 		var placeholders = [];
 		for (var i = 0; i < CODE_COUNT; i++) {
@@ -242,7 +241,9 @@ export class GameService {
 	};
 
 	public setScript(): void {
-		localStorage.setItem('code', this.cmService.getScript());
+		const script = this.cmService.getScript();
+		localStorage.setItem('code', script);
+		this.fireService.updateScript(script);
 		this.saved$$.next(true);
 	}
 
