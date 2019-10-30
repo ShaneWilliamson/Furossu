@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, ReplaySubject } from 'rxjs';
 
 export const DEFAULT_SCRIPT: string = `function myfunc() {
+  // This is an example script which will walk through each and every possible code and guess them in order
   if (this.idx === undefined) {
     this.idx = 0;
   }
