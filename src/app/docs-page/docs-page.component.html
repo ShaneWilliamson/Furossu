@@ -1,9 +1,24 @@
 <div class="page-container">
 <h1 class="mat-h1">Overview</h1>
 
-Your code must be in the following syntax in order to work:
+<p class="mat-body">You are given a list of possible codes, and your goal is to find the correct code in as few guesses as possible.</p>
 
-<pre><code>function yourScript() {{ '{' }}
+<p class="mat-body">You are able to make one guess at a time, and if your guess was not correct, you will be informed how close that guess was to the answer. This value, the <b>likeness</b>, is simply the number of character matches on both index and value.</p>
+
+<p class="mat-body">For example, consider the following possibilities:</p>
+<pre>"ghost"
+"ghast"
+"roast"</pre>
+<p class="mat-body">The answer in this example will happen to be "ghost".</p>
+<p class="mat-body">A guess of "roast" would update that guess with a likeness of 2 ('s' and 't' match)</p>
+<p class="mat-body">A guess of "ghast" would update that guess with a likeness of 4 ('g', 'h', 's', and 't' match).</p>
+
+<mat-divider class="divider"></mat-divider>
+
+<h1 class="mat-h1">Your Script</h1>
+<p class="mat-body">Your code must be in the following syntax in order to work:</p>
+
+<pre><code class="code-block">function yourScript() {{ '{' }}
 	
 	// your logic goes here...
 
@@ -17,15 +32,9 @@ Your code must be in the following syntax in order to work:
 
 <p class="mat-body">You have access to the <code>this</code> variable to save state between guesses if you wish, as well as access to game state.</p>
 
-<p class="mat-body">Logging is available through <code>console.log(message)</code>. You can also use <code>console.error(message)</code>, <code>console.warn(message)</code>, and console.debug(message).</p>
+<p class="mat-body">Logging is available through <code>console.log(message)</code>. You can also use <code>console.error(message)</code>, <code>console.warn(message)</code>, and <code>console.debug(message)</code>.</p>
 
 <p class="mat-body">All built-in game state variables are backed up prior to, and restored after, your function runs. This prevents tampering.</p>
-
-<h2 class="mat-h2">"Likeness"</h2>
-
-<p class="mat-body">A word's likeness is determined by whether or not the string's individual character values of the word match with the answer word's values in both index of the string, and in character value.</p>
-
-<p class="mat-body">e.g. If "ghost" is the answer, and you guess "ghast", the likeness would be 4. However, if you guessed "roast", the likeness would only be 2, as only "s" and "t" would match in both index and value.</p>
 
 <mat-divider class="divider"></mat-divider>
 
