@@ -37,7 +37,7 @@ export class FirestoreService {
         //       });
         //     };
         //   });
-        return this.db.doc<UserDoc>(`user/${user.uid}`);
+        return this.db.doc<UserDoc>(`users/${user.uid}`);
       })
     );
     this.userData$ = this.userDataDoc$.pipe(
@@ -56,7 +56,7 @@ export class FirestoreService {
     // a bit of a race but w/e
     combineLatest([this.userDataDoc$, this.user$]).pipe(
       take(1),
-      filter(([doc, _]: [AngularFirestoreDocument<UserDoc>, User]) => !!doc),
+      filter(([doc, user]: [AngularFirestoreDocument<UserDoc>, User]) => !!doc && !!user),
     ).subscribe(([doc, user]: [AngularFirestoreDocument<UserDoc>, User]) => {
       console.log('Set script on document data');
       doc.set({
