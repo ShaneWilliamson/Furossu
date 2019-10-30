@@ -3,7 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyCFzql8K3Hd2c2RkewxsX4qWbDgDVrK92M',
+    authDomain: 'vendasta-coding-challenge.firebaseapp.com',
+    projectId: 'vendasta-coding-challenge'
+  }
 };
 
 /*

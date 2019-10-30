@@ -3,5 +3,11 @@
 }
 
 .nav-item-container {
-	min-width: 800px;
+	min-width: 1000px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.nav-item-group {
+	display: flex;
 }

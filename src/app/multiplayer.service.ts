@@ -11,7 +11,6 @@ interface MultiplayerGame {
 })
 export class MultiplayerService {
   private game: MultiplayerGame;
-  private database: any;
 
   public start() {
 

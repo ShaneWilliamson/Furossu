@@ -14,6 +14,10 @@ import { GameBoardComponent } from './game-board/game-board.component';
 import { DocsPageComponent } from './docs-page/docs-page.component';
 import { LeaderboardPageComponent } from './leaderboard-page/leaderboard-page.component';
 import { MultiplayerPageComponent } from './multiplayer-page/multiplayer-page.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
 	declarations: [
@@ -27,6 +31,9 @@ import { MultiplayerPageComponent } from './multiplayer-page/multiplayer-page.co
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
+		AngularFireModule.initializeApp(environment.firebase),
+		AngularFireAuthModule,
+		AngularFirestoreModule,
 		MatButtonModule,
 		MatCardModule,
 		MatDividerModule,

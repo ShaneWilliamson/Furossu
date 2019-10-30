@@ -1,8 +1,19 @@
 <mat-toolbar class="nav-item-container">
-	<div class="nav-item">Code-Breaker Coding Challenge</div>
-	<a mat-button routerLink="" class="nav-item">Home</a>
-	<a mat-button routerLink="docs" class="nav-item">Documentation</a>
-	<a mat-button routerLink="leaderboard" class="nav-item">Leaderboard</a>
-	<a mat-button routerLink="multiplayer" class="nav-item">Multiplayer</a>
+	<div class="nav-item-group">
+		<div class="nav-item">Code-Breaker Coding Challenge</div>
+		<a mat-button routerLink="" class="nav-item">Home</a>
+		<a mat-button routerLink="docs" class="nav-item">Documentation</a>
+		<a mat-button routerLink="leaderboard" class="nav-item">Leaderboard</a>
+		<a mat-button routerLink="multiplayer" class="nav-item">Multiplayer</a>
+	</div>
+	<div class="nav-item-group">
+		<div *ngIf="afAuth.user | async as user; else showLogin">
+			<button (click)="logout()" mat-raised-button>Logout of {{ user.displayName }}</button>
+		</div>
+
+		<ng-template #showLogin>
+			<button (click)="login()" mat-raised-button>Login with Google</button>
+		</ng-template>
+	</div>
 </mat-toolbar>
 <router-outlet></router-outlet>
