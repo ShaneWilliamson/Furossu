@@ -111,9 +111,9 @@ export const words = [
 	"gusts",
 ]
 
-const CODE_COUNT = 15;
-const CORRECT_GUESS_VALUE = 200;
-const INCORRECT_GUESS_VALUE = -25;
+export const CODE_COUNT = 15;
+export const CORRECT_GUESS_VALUE = 200;
+export const INCORRECT_GUESS_VALUE = -25;
 
 @Injectable({
 	providedIn: 'root'
