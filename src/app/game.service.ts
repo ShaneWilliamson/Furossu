@@ -154,11 +154,11 @@ export class GameService {
 		).subscribe((val) => this.savedScript$$.next(val));
 	}
 
-	private gameLoop(): void {
+	private gameLoop(sandbox: any): void {
 		if (!this.isGameOver) {
 			var gameState = this.backupGameState();
 			try {  // Wrapped in try-catch since getGuess is user code
-				var guess = this.sandboxService.sandbox.getGuess();
+				var guess = sandbox.runner.getGuess();
 			} finally {
 				this.restoreGameState(gameState);
 			}
@@ -217,13 +217,13 @@ export class GameService {
 		return likeness;
 	}
 
-	private setIntervalTimer(): void {
+	private setIntervalTimer(sandbox: any): void {
 		var self = this;
 		if (this.intervalTimer) {
 			clearInterval(this.intervalTimer);
 			this.intervalTimer = undefined;
 		}
-		this.intervalTimer = setInterval(this.gameLoop.bind(self), 1000 / this.speed);
+		this.intervalTimer = setInterval(this.gameLoop.bind(self, sandbox), 1000 / this.speed);
 	}
 
 	public startSinglePlayerGame(): void {
@@ -245,10 +245,10 @@ export class GameService {
 				this.gameState.script = script;
 			}
 			this.gameState.codes = this.getCodesValue();
-			this.sandboxService.initializeGame(this.gameState);
-			this.sandboxService.sandbox.setScript(this.gameState.script);
+			var sandbox = this.sandboxService.initializeGame(this.gameState);
+			sandbox.runner.setScript(this.gameState.script);
 			this.isGameOver = false;
-			this.setIntervalTimer();
+			this.setIntervalTimer(sandbox);
 		}
 	};
 
