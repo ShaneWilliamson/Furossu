@@ -9,19 +9,12 @@ import { GuessResult } from '../common/guessresult';
 	templateUrl: './game-board.component.html',
 	styleUrls: ['./game-board.component.scss']
 })
-export class GameBoardComponent implements OnInit {
-	public guessResults$: Observable<GuessResult[]>;
-	public codes$: Observable<Code[]>;
-	public score$: Observable<number>;
+export class GameBoardComponent {
+	@Input('results') public guessResults$: Observable<GuessResult[]>;
+	@Input('score') public score$: Observable<number>;
 	@Input() isSinglePlayer: boolean = true;
 
 	constructor(private gameService: GameService) {
-		this.score$ = this.gameService.score$;
-		this.guessResults$ = this.gameService.guessResults$;
-	}
-
-	ngOnInit(): void {
-		this.codes$ = this.gameService.getCodes();
 	}
 
 	start(): void {

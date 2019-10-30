@@ -8,17 +8,19 @@ import { FirestoreService, UserDoc } from './firestore.service';
 import { words, CORRECT_GUESS_VALUE, INCORRECT_GUESS_VALUE, CODE_COUNT } from './game.service';
 import { take } from 'rxjs/operators';
 
-class MpGameSet {
+export class MpGameSet {
   speed: number;
   games: MpGame[];
-  score$$: BehaviorSubject<number>;
-  score$: Observable<number>;
+  score$$: BehaviorSubject<number> = new BehaviorSubject(0);
+  score$: Observable<number> = this.score$$.asObservable();
+  guessResults$$: BehaviorSubject<GuessResult[]> = new BehaviorSubject([]);
+  guessResults$: Observable<GuessResult[]> = this.guessResults$$.asObservable();
   isOver: boolean;
 
   player: UserDoc;
 }
 
-class MpGame {
+export class MpGame {
   guessResults$$: BehaviorSubject<GuessResult[]> = new BehaviorSubject([]);
   guessResults$: Observable<GuessResult[]> = this.guessResults$$.asObservable();
   codes$$: BehaviorSubject<Code[]> = new BehaviorSubject([]);
@@ -127,10 +129,12 @@ export class MultiplayerGameService {
       answerCode.isGuessed = true;
       const newScore = game.addScore(CORRECT_GUESS_VALUE);
       game.guessResults$$.next([...game.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
+      game.gameSet.guessResults$$.next([...game.gameSet.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       return;
     } else {
       const newScore = game.addScore(INCORRECT_GUESS_VALUE);
       game.guessResults$$.next([...game.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: false }]);
+      game.gameSet.guessResults$$.next([...game.gameSet.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: false }]);
     }
     for (var i = 0; i < game.gameState.codes.length; i++) {
       if (guess === codes[i].code) {
@@ -156,7 +160,7 @@ export class MultiplayerGameService {
       clearInterval(game.intervalTimer);
       game.intervalTimer = undefined;
     }
-    game.intervalTimer = setInterval(this.gameLoop.bind(self, game.sandbox), 1000 / game.gameSet.speed);
+    game.intervalTimer = setInterval(this.gameLoop.bind(self, game), 1000 / game.gameSet.speed);
   }
 
   // -- the big one --
@@ -165,6 +169,7 @@ export class MultiplayerGameService {
     this.fireService.getPlayers().pipe(
       take(1)
     ).subscribe(players => {
+      let sets = [];
       players.forEach((player) => {
         if (!player || !player.script) {
           return;
@@ -173,6 +178,7 @@ export class MultiplayerGameService {
         gameSet.player = player;
         gameSet.isOver = false;
         gameSet.speed = speed;
+        gameSet.games = [];
         // create the games for the set
         for (let i = 0; i < numGames; i++) {
           let g = new MpGame();
@@ -180,7 +186,13 @@ export class MultiplayerGameService {
           g.gameState = new GameState();
           g.gameState.script = player.script;
           g.gameSet = gameSet;
+          gameSet.games.push(g);
         };
+        sets.push(gameSet);
+      });
+      this.games$$.next(sets);
+      sets.forEach(set => {
+        this.startSet(set);
       });
     });
   }
@@ -201,10 +213,11 @@ export class MultiplayerGameService {
       game.resetState();
       game.initializeCodes();
       game.gameState.codes = game.getCodesValue();
+      game.gameState.script = game.gameSet.player.script;
       game.sandbox = this.sandboxService.initializeGame(game.gameState);
       game.sandbox.runner.setScript(game.gameState.script);
       game.isGameOver = false;
-      this.setIntervalTimer(game.sandbox);
+      this.setIntervalTimer(game);
     }
   };
 

@@ -178,7 +178,6 @@ export class GameService {
 		let codes = this.getCodesValue();
 		let answerCode = codes[this.answerIdx];
 		if (answerCode.code === guess) {
-			console.log("Correct guess!");
 			this.isGameOver = true;
 			answerCode.isGuessed = true;
 			const newScore = this.addScore(CORRECT_GUESS_VALUE);
@@ -213,7 +212,6 @@ export class GameService {
 				likeness++;
 			}
 		}
-		console.log('likeness: ' + likeness);
 		return likeness;
 	}
 

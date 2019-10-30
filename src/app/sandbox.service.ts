@@ -19,7 +19,6 @@ function SandboxRunner(gameState: GameState) {
 			console.log('Script has been set.');
 		} catch (e) {
 			this.script = priorScript;
-			console.log();
 		}
 	};
 	this.getCodes = function() {

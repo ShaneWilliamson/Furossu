@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { MultiplayerService } from '../multiplayer.service';
 import { Observable } from 'rxjs';
-import { UserDoc } from '../firestore.service';
+import { MultiplayerGameService, MpGameSet } from '../multiplayer-game.service';
 
 @Component({
   selector: 'code-multiplayer-page',
@@ -9,16 +8,16 @@ import { UserDoc } from '../firestore.service';
   styleUrls: ['./multiplayer-page.component.scss']
 })
 export class MultiplayerPageComponent {
-  public players$: Observable<UserDoc[]>;
+  public games$: Observable<MpGameSet[]>;
   speed: number = 5;
   numGames: number = 1;
 
-  constructor(private ms: MultiplayerService) {
-    this.players$ = ms.players$;
+  constructor(private ms: MultiplayerGameService) {
+    this.games$ = this.ms.games$;
   }
   
   start(): void {
-    
+    this.ms.startAllSets(this.speed, this.numGames);
   }
 
 }

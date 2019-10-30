@@ -12,6 +12,7 @@ import 'codemirror/addon/search/match-highlighter.js';
 import { Router } from '@angular/router';
 import { Observable, merge, of } from 'rxjs';
 import { GameService } from '../game.service';
+import { GuessResult } from '../common/guessresult';
 
 @Component({
 	selector: 'code-home-page',
@@ -20,10 +21,14 @@ import { GameService } from '../game.service';
 })
 export class HomePageComponent implements AfterViewInit {
 	saved$: Observable<boolean>;
+	public guessResults$: Observable<GuessResult[]>;
+	public score$: Observable<number>;
 
 	constructor(private renderer: Renderer2, private cmService: CmService, private router: Router, private gameService: GameService) {
 		(<any>window).JSHINT = require('jshint').JSHINT;
 		this.saved$ = this.gameService.savedScript$;
+		this.score$ = this.gameService.score$;
+		this.guessResults$ = this.gameService.guessResults$;
 	}
 
 	ngAfterViewInit(): void {
