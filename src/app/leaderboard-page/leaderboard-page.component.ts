@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FirestoreService, Leader } from '../firestore.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'code-leaderboard-page',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeaderboardPageComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = ['score', 'displayName'];
+  dataSource: Observable<Leader[]>;
+  constructor(private fs: FirestoreService) { }
 
   ngOnInit() {
+    this.dataSource = this.fs.getLeaders();
   }
 
 }

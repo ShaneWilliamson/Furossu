@@ -9,6 +9,12 @@ export interface UserDoc {
   email: string;
   displayName: string;
   script: string;
+  uid: string;
+}
+
+export interface Leader {
+  displayName: string;
+  score: number;
 }
 
 @Injectable({
@@ -62,12 +68,21 @@ export class FirestoreService {
       doc.set({
         email: user.email,
         displayName: user.displayName,
-        script: script
+        script: script,
+        uid: user.uid,
       });
     });
   }
 
   getPlayers(): Observable<UserDoc[]> {
     return this.db.collection<UserDoc>('users').valueChanges();
+  }
+
+  getLeaders(): Observable<Leader[]> {
+    return this.db.collection<Leader>('leaders', ref => ref.orderBy('score', 'desc')).valueChanges();
+  }
+
+  putLeader(player: UserDoc, score: number): void {
+    this.db.doc<Leader>(`leaders/${player.uid}`).set({displayName: player.displayName, score: score});
   }
 }

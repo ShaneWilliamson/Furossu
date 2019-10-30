@@ -130,10 +130,12 @@ export class MultiplayerGameService {
     if (answerCode.code === guess) {
       game.isGameOver = true;
       answerCode.isGuessed = true;
+      const finalScore = game.gameSet.score$$.getValue() + CORRECT_GUESS_VALUE;
       const newScore = game.addScore(CORRECT_GUESS_VALUE);
       game.guessResults$$.next([...game.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       game.gameSet.guessResults$$.next([...game.gameSet.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       game.gameSet.shouldStartNext$$.next(game.gameSet.shouldStartNext$$.getValue() + 1);
+      this.fireService.putLeader(game.gameSet.player, finalScore);
       return;
     } else {
       const newScore = game.addScore(INCORRECT_GUESS_VALUE);
