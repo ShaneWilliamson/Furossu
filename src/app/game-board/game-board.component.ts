@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GameService } from '../game.service';
-import { Code } from '../common/code';
 import { Observable } from 'rxjs';
 import { GuessResult } from '../common/guessresult';
 

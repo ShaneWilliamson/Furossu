@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { GuessResult } from './common/guessresult';
 import { Code } from './common/code';
 import { GameState, Game } from './common/gamestate';
 import { SandboxService } from './sandbox.service';
 import { FirestoreService, UserDoc } from './firestore.service';
 import { words, CORRECT_GUESS_VALUE, INCORRECT_GUESS_VALUE, CODE_COUNT } from './game.service';
-import { take } from 'rxjs/operators';
+import { take, takeUntil, shareReplay } from 'rxjs/operators';
 
 export class MpGameSet {
   speed: number;
@@ -16,6 +16,9 @@ export class MpGameSet {
   guessResults$$: BehaviorSubject<GuessResult[]> = new BehaviorSubject([]);
   guessResults$: Observable<GuessResult[]> = this.guessResults$$.asObservable();
   isOver: boolean;
+  shouldStartNext$$: BehaviorSubject<number> = new BehaviorSubject(0);
+  shouldStartNext$: Observable<number> = this.shouldStartNext$$.asObservable().pipe(shareReplay(1));
+  destroy$$ = new Subject();
 
   player: UserDoc;
 }
@@ -130,6 +133,7 @@ export class MultiplayerGameService {
       const newScore = game.addScore(CORRECT_GUESS_VALUE);
       game.guessResults$$.next([...game.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       game.gameSet.guessResults$$.next([...game.gameSet.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
+      game.gameSet.shouldStartNext$$.next(game.gameSet.shouldStartNext$$.getValue() + 1);
       return;
     } else {
       const newScore = game.addScore(INCORRECT_GUESS_VALUE);
@@ -150,6 +154,8 @@ export class MultiplayerGameService {
     }
     console.log("INVALID GUESS! Code not found");
     game.isGameOver = true;
+    game.gameSet.isOver = true;
+    game.gameSet.destroy$$.next();
     game.addScore(INCORRECT_GUESS_VALUE * CODE_COUNT);
     return codes;
   }
@@ -205,7 +211,19 @@ export class MultiplayerGameService {
       set.score$$.next(-10000);
       return;
     }
-    set.games.forEach(this.start.bind(this));
+    var self = this;
+    set.shouldStartNext$.pipe(
+      takeUntil(set.destroy$$)
+    ).subscribe(idx => {
+      if (idx >= set.games.length) {
+        return;
+      }
+      self.start(set.games[idx]);
+    });
+    set.shouldStartNext$$.next(0);
+    set.destroy$$.asObservable().subscribe(_ => {
+      set.isOver = true;
+    });
   }
 
   public start(game: MpGame): void {
