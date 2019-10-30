@@ -157,8 +157,10 @@ export class MultiplayerGameService {
     console.log("INVALID GUESS! Code not found");
     game.isGameOver = true;
     game.gameSet.isOver = true;
-    game.gameSet.destroy$$.next();
+    let finalScore = game.gameSet.score$$.getValue() + INCORRECT_GUESS_VALUE * CODE_COUNT;
     game.addScore(INCORRECT_GUESS_VALUE * CODE_COUNT);
+    game.gameSet.destroy$$.next();
+    this.fireService.putLeader(game.gameSet.player, finalScore);
     return codes;
   }
 

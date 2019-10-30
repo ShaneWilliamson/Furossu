@@ -201,6 +201,7 @@ export class GameService {
 		}
 		console.log("INVALID GUESS! Code not found");
 		this.isGameOver = true;
+		this.addScore(INCORRECT_GUESS_VALUE * 20);
 		return codes;
 	}
 
