@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { GameState } from './common/gamestate';
 import { DEFAULT_SCRIPT } from './cm.service';
 
-function Sandbox(gameState: GameState) {
+export class Sandbox {
+	runner: any;
+}
+
+function SandboxRunner(gameState: GameState) {
 	this.codes = gameState.codes;
 	this.script = gameState.script;
 
@@ -28,15 +32,16 @@ function Sandbox(gameState: GameState) {
 })
 export class SandboxService {
 	private gameState: GameState;
-	public sandbox: any;
 
 	constructor() {
 		this.gameState = new GameState();
 		this.gameState.script = DEFAULT_SCRIPT;
 	}
 
-	public initializeGame(gameState: GameState): void {
+	public initializeGame(gameState: GameState): Sandbox {
 		var gs = Object.freeze(gameState);
-		this.sandbox = new Sandbox(gs); // todo
+		let sb = new Sandbox();
+		sb.runner = new SandboxRunner(gs);
+		return sb;
 	}
 }

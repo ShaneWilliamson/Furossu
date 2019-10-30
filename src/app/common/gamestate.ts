@@ -10,4 +10,6 @@ export interface Game {
 	player: UserDoc;
 	score: number;
 	isOver: boolean;
+	gameState: GameState;
+	sandbox: any;
 }
