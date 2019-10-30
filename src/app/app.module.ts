@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +38,7 @@ import { environment } from 'src/environments/environment';
 		MatButtonModule,
 		MatCardModule,
 		MatDividerModule,
+		MatGridListModule,
 		MatToolbarModule,
 		AppRoutingModule,
 	],

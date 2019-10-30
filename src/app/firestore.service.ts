@@ -66,4 +66,8 @@ export class FirestoreService {
       });
     });
   }
+
+  getPlayers(): Observable<UserDoc[]> {
+    return this.db.collection<UserDoc>('users').valueChanges();
+  }
 }

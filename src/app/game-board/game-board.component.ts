@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { GameService } from '../game.service';
 import { Code } from '../common/code';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ export class GameBoardComponent implements OnInit {
 	public guessResults$: Observable<GuessResult[]>;
 	public codes$: Observable<Code[]>;
 	public score$: Observable<number>;
+	@Input() isSinglePlayer: boolean = true;
 
 	constructor(private gameService: GameService) {
 		this.score$ = this.gameService.score$;

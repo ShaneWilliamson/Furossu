@@ -1,1 +1,7 @@
-<p>multiplayer-page works!</p>
+<mat-grid-list class="list" cols="4" rowHeight="600px">
+    <ng-container *ngIf="players$ | async as players">
+        <mat-grid-tile *ngFor="let p of players">
+            <code-game-board [isSinglePlayer]="false"></code-game-board>
+        </mat-grid-tile>
+    </ng-container>
+</mat-grid-list>

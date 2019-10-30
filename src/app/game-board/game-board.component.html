@@ -22,5 +22,7 @@
 		Score: {{score$ | async}}
 	</mat-card-content>
 </mat-card>
-<button mat-raised-button color="primary" (click)="start()">Start</button>
-<button mat-raised-button color="secondary" (click)="setScript()">Set Script</button>
+<ng-container *ngIf="isSinglePlayer">
+	<button mat-raised-button color="primary" (click)="start()">Start</button>
+	<button mat-raised-button color="secondary" (click)="setScript()">Set Script</button>
+</ng-container>
