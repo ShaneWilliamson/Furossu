@@ -111,7 +111,7 @@ export const words = [
 	"gusts",
 ]
 
-export const CODE_COUNT = 15;
+export const CODE_COUNT = 25;
 export const CORRECT_GUESS_VALUE = 200;
 export const INCORRECT_GUESS_VALUE = -25;
 
