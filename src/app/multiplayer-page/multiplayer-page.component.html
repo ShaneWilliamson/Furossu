@@ -22,7 +22,7 @@
 <mat-grid-list class="list" cols="4" rowHeight="600px">
     <ng-container *ngIf="games$ | async as games">
         <mat-grid-tile *ngFor="let g of games">
-            <code-game-board [isSinglePlayer]="false" [results]="g.guessResults$" [score]="games.score$"></code-game-board>
+            <code-game-board [isSinglePlayer]="false" [results]="g.guessResults$" [score]="g.score$ | async"></code-game-board>
         </mat-grid-tile>
     </ng-container>
 </mat-grid-list>

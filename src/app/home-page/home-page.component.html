@@ -1,6 +1,6 @@
 <div class="page-container">
 	<div class="game-container panel-content">
-		<code-game-board [results]="guessResults$" [score]="score$"></code-game-board>
+		<code-game-board [results]="guessResults$" [score]="score$ | async"></code-game-board>
 	</div>
 	<div class="panel-container">
 		<div class="header-container">

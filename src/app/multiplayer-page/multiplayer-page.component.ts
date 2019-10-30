@@ -9,11 +9,17 @@ import { MultiplayerGameService, MpGameSet } from '../multiplayer-game.service';
 })
 export class MultiplayerPageComponent {
   public games$: Observable<MpGameSet[]>;
+  
   speed: number = 5;
   numGames: number = 1;
 
   constructor(private ms: MultiplayerGameService) {
     this.games$ = this.ms.games$;
+    this.games$.subscribe(game => {
+      game[0].score$.subscribe(res => {
+        debugger;
+      });
+    });
   }
   
   start(): void {

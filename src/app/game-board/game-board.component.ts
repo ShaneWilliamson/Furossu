@@ -11,7 +11,7 @@ import { GuessResult } from '../common/guessresult';
 })
 export class GameBoardComponent {
 	@Input('results') public guessResults$: Observable<GuessResult[]>;
-	@Input('score') public score$: Observable<number>;
+	@Input('score') public score: number;
 	@Input() isSinglePlayer: boolean = true;
 
 	constructor(private gameService: GameService) {
