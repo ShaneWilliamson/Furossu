@@ -4,7 +4,7 @@ service cloud.firestore {
       allow read, write: if request.auth.uid == userId;
       allow read, write: if request.auth.uid == "RnIUHCiuWJPHQRuS63jNktoRots2";
     }
-    match /leaderboard/{userId} {
+    match /leaders/{userId} {
       allow read: if true;
       allow write: if request.auth.uid == "RnIUHCiuWJPHQRuS63jNktoRots2";
     }
