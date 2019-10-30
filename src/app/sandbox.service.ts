@@ -22,7 +22,7 @@ function SandboxRunner(gameState: GameState) {
 		}
 	};
 	this.getCodes = function() {
-		return this.codes;
+		return [... this.codes.map(c => ({...c}))];
 	};
 }
 
