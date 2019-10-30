@@ -25,7 +25,7 @@ export class GameBoardComponent implements OnInit {
 	}
 
 	start(): void {
-		this.gameService.start();
+		this.gameService.startSinglePlayerGame();
 	}
 
 	setScript(): void {

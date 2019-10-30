@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Code } from './common/code';
 import { Observable, BehaviorSubject, ReplaySubject, merge } from 'rxjs';
 import { SandboxService } from './sandbox.service';
-import { GameState } from './common/gamestate';
+import { GameState, Game } from './common/gamestate';
 import { CmService } from './cm.service';
 import { GuessResult } from './common/guessresult';
 import { map, startWith } from 'rxjs/operators';
@@ -226,12 +226,24 @@ export class GameService {
 		this.intervalTimer = setInterval(this.gameLoop.bind(self), 1000 / this.speed);
 	}
 
-	public start(): void {
-		var script = this.cmService.getScript();
+	public startSinglePlayerGame(): void {
+		this.start(null, this.cmService.getScript());
+	}
+
+	public start(mpGame: Game, script: string): void {
+		if (!!mpGame && (!mpGame.player || !mpGame.player.script)) {
+			mpGame.isOver = true;
+			mpGame.score = 0;
+			return;
+		}
 		if (this.isGameOver && script) {
 			this.resetState();
 			this.initializeCodes();
-			this.gameState.script = script;
+			if (mpGame) {
+				this.gameState.script = mpGame.player.script;
+			} else {
+				this.gameState.script = script;
+			}
 			this.gameState.codes = this.getCodesValue();
 			this.sandboxService.initializeGame(this.gameState);
 			this.sandboxService.sandbox.setScript(this.gameState.script);
