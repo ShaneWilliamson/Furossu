@@ -1,3 +1,24 @@
+<div class="start-container">
+    <button mat-raised-button color="primary" (click)="start()" class="start-button">Start</button>
+    <mat-form-field>
+        <mat-label>Game Speed</mat-label>
+        <mat-select [(value)]="speed">
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="100">100</mat-option>
+            <mat-option value="1000">1000</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Number of Game</mat-label>
+        <mat-select [(value)]="numGames">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="5">5</mat-option>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="20">20</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
 <mat-grid-list class="list" cols="4" rowHeight="600px">
     <ng-container *ngIf="players$ | async as players">
         <mat-grid-tile *ngFor="let p of players">
