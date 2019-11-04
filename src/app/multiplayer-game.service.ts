@@ -130,12 +130,10 @@ export class MultiplayerGameService {
     if (answerCode.code === guess) {
       game.isGameOver = true;
       answerCode.isGuessed = true;
-      const finalScore = game.gameSet.score$$.getValue() + CORRECT_GUESS_VALUE;
       const newScore = game.addScore(CORRECT_GUESS_VALUE);
       game.guessResults$$.next([...game.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       game.gameSet.guessResults$$.next([...game.gameSet.guessResults$$.getValue(), { guess: guess, score: newScore, isAnswer: true }]);
       game.gameSet.shouldStartNext$$.next(game.gameSet.shouldStartNext$$.getValue() + 1);
-      this.fireService.putLeader(game.gameSet.player, finalScore);
       return;
     } else {
       const newScore = game.addScore(INCORRECT_GUESS_VALUE);
@@ -160,7 +158,7 @@ export class MultiplayerGameService {
     let finalScore = game.gameSet.score$$.getValue() + INCORRECT_GUESS_VALUE * CODE_COUNT;
     game.addScore(INCORRECT_GUESS_VALUE * CODE_COUNT);
     game.gameSet.destroy$$.next();
-    this.fireService.putLeader(game.gameSet.player, finalScore);
+    this.fireService.putLeader(game.gameSet.player, -10000);
     return codes;
   }
 
@@ -222,10 +220,12 @@ export class MultiplayerGameService {
       if (idx >= set.games.length) {
         return;
       }
+
       self.start(set.games[idx]);
     });
     set.shouldStartNext$$.next(0);
     set.destroy$$.asObservable().subscribe(_ => {
+      this.fireService.putLeader(set.player, set.score$$.getValue()/set.games.length);
       set.isOver = true;
     });
   }
@@ -236,6 +236,7 @@ export class MultiplayerGameService {
       game.initializeCodes();
       game.gameState.codes = game.getCodesValue();
       game.gameState.script = game.gameSet.player.script;
+      game.gameSet.guessResults$$.next([]);
       game.sandbox = this.sandboxService.initializeGame(game.gameState);
       game.sandbox.runner.setScript(game.gameState.script);
       game.isGameOver = false;
