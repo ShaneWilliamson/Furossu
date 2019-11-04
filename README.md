@@ -2,6 +2,8 @@
 
 A coding challenge that is inspired by Bulls and Cows/Mastermind/the Fallout hacking mini-games. (Mostly the Fallout hacking mini-games)
 
+![](./assets/home-page.png)
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.10.
